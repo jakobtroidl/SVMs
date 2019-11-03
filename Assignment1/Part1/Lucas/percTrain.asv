@@ -1,0 +1,7 @@
+function w = percTrain(X, t, maxIts, online)
+% Returns a weight vector w corresponding to the decision boundary
+% separating the input vectors in Xaccording to their target valuest.The  argumentmaxItsdetermines  an  upper  limit  for  iterations  of  the  gradientbased optimization procedure.  If this upper limit is reached before a solution vectoris found, the function returns the currentw, otherwise it returns the solution weightvector.onlineistrueif theonline-version of the optimization procedure is to beused orfalsefor thebatch-version.
+
+
+
+end
