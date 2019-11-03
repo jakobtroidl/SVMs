@@ -1,0 +1,14 @@
+addpath(genpath(pwd));
+
+% Read the data using available packages for your programming language resp.
+% simulation software
+[imgs, labels, imgsTest, labelsTest] = readMNISTauto();
+
+% Choose two classes (e.g., all images of digits ?0? and ?1?) for the
+% following two-class classification task
+imgs0 = getDigit(imgs, labels, 0);
+imgs1 = getDigit(imgs, labels, 1);
+
+% Select a small subsetT(with less than 1000 imagesin total) of
+% corresponding images from the MNIST training set
+imgs0 = imgs0(:,:,0
