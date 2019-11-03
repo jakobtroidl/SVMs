@@ -41,8 +41,16 @@ legend('Zeros', 'Ones');
 X = [fa0 s0; fa1 s1];
 t = [-ones(size(fa0)); ones(size(fa1))];
 
-disp('Training...');
+maxIts = 10000;
+
+disp(['Training online with maxIts=' num2str(maxIts) '...']);
 tic;
-w = percTrain(X, t, 100000, true);
+wonline = percTrain(X, t, maxIts, true);
 toc;
-y = perc(w, X);
+yonline = perc(w, X);
+
+disp(['Training batch with maxIts=' num2str(maxIts) '...']);
+tic;
+wbatch = percTrain(X, t, maxIts, false);
+toc;
+ybatch = perc(w, X);

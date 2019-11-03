@@ -11,7 +11,6 @@ function w = percTrain(X, t, maxIts, online)
 
 N = size(X,1);
 d = size(X,2);
-learningRate = 1;
 bias = 0.1;
 
 % Add bias
@@ -26,7 +25,8 @@ X = X(perm,:);
 t = t(perm);
 
 if (online)
-    for it = 1:maxIts
+    learningRate = 1;
+    for ite = 1:maxIts
         noMisclass = true;
         for i = 1:N
             xt = X(i,:) .* t(i);
@@ -41,7 +41,16 @@ if (online)
     end
         
 else % batch
-    normalized = (X .* t) * w;
+    learningRate = 0.2;
+    for ite = 1:maxIts
+        xt = X .* t;
+        misclass = xt * w <= 0;
+        if (sum(misclass) == 0)
+            break;
+        end
+        xt = xt(misclass,:);
+        w = w + (learningRate .* sum(xt))';
+    end
     
 end
 
