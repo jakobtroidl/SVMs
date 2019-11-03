@@ -23,6 +23,10 @@ if (~exist('fa1','var'))
     [imgs1, fa1, s1] = digitSubsetProps(imgs1,count);
 end
 
+% Normalize
+[fa0, fa1] = normal(fa0, fa1);
+[s0, s1] = normal(s0, s1);
+
 % Plot the input vectors in R2 and visualize corresponding target values
 % (e.g. by using color).
 c = lines(2);
@@ -33,3 +37,12 @@ scatter(fa1, s1, 'filled', 'MarkerFaceColor', c(2,:));
 hold off;
 legend('Zeros', 'Ones');
 
+% Input (X) and labels (t)
+X = [fa0 s0; fa1 s1];
+t = [-ones(size(fa0)); ones(size(fa1))];
+
+disp('Training...');
+tic;
+w = percTrain(X, t, 100000, true);
+toc;
+y = perc(w, X);

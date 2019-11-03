@@ -4,6 +4,7 @@ function y = perc(w, X)
 % matrix with input vectors in its columns X.  The output y is a binary
 % vector with class labels 1 or -1
 
-
+X = [X ones(size(X,1),1)];
+y = sign(X * w);
 
 end

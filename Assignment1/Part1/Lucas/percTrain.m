@@ -9,6 +9,40 @@ function w = percTrain(X, t, maxIts, online)
 % online-version of the optimization procedure is to be used or false for
 % the batch-version.
 
+N = size(X,1);
+d = size(X,2);
+learningRate = 1;
+bias = 0.1;
 
+% Add bias
+w = [zeros(d,1); -bias];
+
+% Add homogeneous coordinates
+X = [X ones(N,1)];
+
+% Permutate
+perm = randperm(N);
+X = X(perm,:);
+t = t(perm);
+
+if (online)
+    for it = 1:maxIts
+        noMisclass = true;
+        for i = 1:N
+            xt = X(i,:) .* t(i);
+            if (xt * w <= 0) % Misclassified
+                w = w + (learningRate * xt');
+                noMisclass = false;
+            end
+        end
+        if (noMisclass)
+           break; 
+        end
+    end
+        
+else % batch
+    normalized = (X .* t) * w;
+    
+end
 
 end
