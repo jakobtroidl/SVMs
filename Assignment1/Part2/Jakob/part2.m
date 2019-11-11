@@ -1,8 +1,9 @@
 %% Experimental setup
 N = 7;
 d = 2;
-threshold = 0.02; % training will terminate when error is lower than threshold
-gamma = 0.02; % learning rate
+threshold = 80; % training will terminate when error is lower than threshold
+gamma = 0.002; % learning rate
+max_iterations = 10000;
 
 x = 0:0.1:5;
 y = 2 * x.^2 - 5 * x + 1;
@@ -12,15 +13,9 @@ x_training = x(1:(N+1):end);
 t = y(1:(N+1):end);
 
 % compute offsets for t_training using the normal distribution
-% create the normal distribution
-n_x = -5:.1:5;
-n_dist = normpdf(n_x, 0, 4);
+offset = normrnd(0, 4, 1, N);
 
-% extract N random values of the normal distribution
-indices = randperm(numel(n_dist), N);
-offset = n_dist(indices);
-
-power = [0; 1; 2]; % powers of the phi function
+power = (0:1:d)'; % powers of the phi function
 X = repmat(x_training, d + 1, 1);
 
 %% Parameter Optimization
@@ -35,35 +30,43 @@ diff = realmax('double');
 counter = 0;
 
 % perform training
-while counter < 100
-    %i = mod(counter, N) + 1;
-   
-    for i = 1:7 
-        w = w + 2 * gamma * (t(i) - w' * X(:, i)) * X(:, i);
-    end
+while counter < max_iterations && e > threshold
+    
+    % compute current index in [1, N]
+    i = mod(counter, N) + 1;
+    
+    % update weight vector
+    w = w + 2 * gamma * (t(i) - w' * X(:, i)) * X(:, i);
     
     new_error = error(w, X, t); 
     
     out = [ 'Iterations: ', num2str(counter), ...
             ' Error: ', num2str(new_error), ... 
-            sprintf(' w: [%d, %d, %d]', w)];
+            sprintf(' w: [%d, %d, %d]', w) ];
         
     disp(out);
     counter = counter + 1;
     e = new_error;
 end
 
-% plot(x, y, 'Color', 'green');
-% hold on
-% scatter(x_training, t);
-% %hold on
-% %fplot(@(x) w(1) + x * w(2) + x^2 * w(3),'Color', 'red')
-% hold off
+% compute final target values
+t_out = zeros(size(t));
+for i = 1:size(x,2)
+    t_out(i) = w' * (repmat(x(i), d + 1, 1) .^ power);
+end
+
+plot(x, y, 'Color', 'green', 'linewidth', 2);
+hold on
+plot(x, t_out, 'Color', 'red', 'linewidth', 2);
+scatter(x_training, t, 'blue');
+hold on
+legend('true target', 'fitted model', 'training data')
+hold off
 
 
 
 function e = error(w, X, t)
-% computes the error from a given weight vector
+% computes the error f a given weight vector
     o = w' * X;
     e = (t - o) * (t - o)';
 end
