@@ -54,13 +54,22 @@ for i = 1:size(x,2)
     t_out(i) = w' * (repmat(x(i), d + 1, 1) .^ power);
 end
 
+% compute w* in closed version
+w_closed = pinv(X * X') * X * t';
+t_out_closed = zeros(size(t));
+for i = 1:size(x,2)
+    t_out_closed(i) = w_closed' * (repmat(x(i), d + 1, 1) .^ power);
+end
+
 % print results
 plot(x, y, 'Color', 'green', 'linewidth', 2);
 hold on
 plot(x, t_out, 'Color', 'red', 'linewidth', 2);
 scatter(x_training, t, 'blue');
 hold on
-legend('true target', 'fitted model', 'training data')
+plot(x, t_out_closed, 'Color', 'cyan', 'linewidth', 2);
+hold on
+legend('true target', 'model online', 'training data', 'model closed')
 hold off
 
 
