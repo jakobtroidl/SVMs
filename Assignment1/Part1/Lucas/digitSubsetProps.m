@@ -1,11 +1,11 @@
-function [imgsOut, filledArea, solidity] = digitSubsetProps(imgs, count)
+function [imgsOut, prop1, prop2] = digitSubsetProps(imgs, count)
 
 s = size(imgs);
 s(3) = count;
 imgsOut = zeros(s);
 
-filledArea = zeros(count,1);
-solidity = zeros(count,1);
+prop1 = zeros(count,1);
+prop2 = zeros(count,1);
 
 idx = 1;
 disp(['Extracting properties of ' num2str(count) ' images...']);
@@ -13,11 +13,11 @@ tic;
 for i = 1:size(imgs,3)
     
     img = imgs(:,:,i);
-    props = regionprops(img, 'FilledArea', 'Solidity');
+    props = regionprops(img, 'Eccentricity', 'FilledArea', 'Solidity');
     
     if (size(props,1) > 0)
-        filledArea(idx) = props.FilledArea;
-        solidity(idx) = props.Solidity;
+        prop1(idx) = props.FilledArea;
+        prop2(idx) = props.Eccentricity;
         idx = idx + 1;
         if (idx > count)
             break
