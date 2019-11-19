@@ -27,11 +27,11 @@ tTraining = y(1:trainDataStep:trainDataStep*N);
 
 %Image generation
 for img = 1:N
-    images(:, :, img) = zeros(imageSizeY, imageSizeX);
+    xImages(:, :, img) = zeros(imageSizeY, imageSizeX);
     for i = 1:imageSizeY
         for j = 1:imageSizeX
             if ((i - m1(img))^2 + (j - m2(img))^2 - (3*xTraining(img))^2) < 0
-                images(i, j, img) = 1;
+                xImages(i, j, img) = 1;
             end
         end
     end
@@ -39,9 +39,11 @@ end
 
 imageArray = [];
 for img = 1:N
-    imageArray = [imageArray images(:, :, img)];
+    imageArray = [imageArray xImages(:, :, img)];
     imageArray = [imageArray ones(imageSizeY, displayScale)];
 end
 figure;
 imshow(imageArray);
 truesize([imageSizeY*displayScale, imageSizeX*displayScale*N]);
+
+filledAreaRatio = getfield(regionprops(xImages(:, :, 5)), 'Area')
