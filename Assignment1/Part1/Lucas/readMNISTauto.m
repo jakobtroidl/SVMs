@@ -7,11 +7,11 @@ if (evalin('base', 'exist(''trainImgs'',''var'') == 1') && ...
     trainImgs = evalin('base','trainImgs');
     trainLabels = evalin('base','trainLabels');
 else
-    disp('Loading training set...');
+    readDigits = 5000; % Max: 60000
+    disp(['Loading training set (' num2str(readDigits) ' images)...']);
     tic;
     imgFile = "train-images.idx3-ubyte";
     labelFile = "train-labels.idx1-ubyte";
-    readDigits = 60000;
     offset = 0;
     [trainImgs, trainLabels] = readMNIST(imgFile, labelFile, readDigits, offset);
     assignin('base', 'trainImgs', trainImgs);
@@ -26,11 +26,11 @@ if (evalin('base', 'exist(''testImgs'',''var'') == 1') && ...
     testImgs = evalin('base','testImgs');
     testLabels = evalin('base','testLabels');
 else
-    disp('Loading test set...');
+    readDigits = 5000; % Max: 10000
+    disp(['Loading test set (' num2str(readDigits) ' images)...']);
     tic;
     imgFile = "t10k-images.idx3-ubyte";
     labelFile = "t10k-labels.idx1-ubyte";
-    readDigits = 10000;
     offset = 0;
     [testImgs, testLabels] = readMNIST(imgFile, labelFile, readDigits, offset);
     assignin('base', 'testImgs', testImgs);

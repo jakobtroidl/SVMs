@@ -11,32 +11,31 @@ function w = percTrain(X, t, maxIts, online)
 
 N = size(X,2);
 d = size(X,1);
-bias = 0.1;
 
-% Add bias
-w = [zeros(1,d) -bias];
-
-% Add homogeneous coordinates
-X = [X; ones(1,N)];
+% bias = 0.1;
+w = zeros(1,d);
 
 if (online)
     learningRate = 1;
-    for ite = 1:maxIts
-        noMisclass = true;
+    
+    for epoch = 1:maxIts
         for i = 1:N
-            xt = X(:,i) .* t(i);
-            if (w * xt <= 0) % Misclassified
-                w = w + (learningRate * xt');
-                noMisclass = false;
+            xiti = X(:,i) * t(i);
+            if w * xiti <= 0 % Misclassified
+                w = w + (learningRate * xiti)';
+                
+%                 hold on;
+%                 scatter(X(end-1,i),X(end,i),'ok');
+%                 y = sign(w * X);
+%                 error = sum(y ~= t);
+%                 disp(['Error: ' num2str(error)]);
+%                 plotBoundary(w, true);
             end
         end
-        if (noMisclass)
-           break; 
-        end
     end
-        
+
 else % batch
-    learningRate = 0.2;
+    learningRate = 0.01;
     for ite = 1:maxIts
         xt = X .* t;
         misclass = w * xt <= 0;
@@ -45,6 +44,12 @@ else % batch
         end
         xt = xt(:,misclass);
         w = w + (learningRate .* sum(xt,2))';
+        
+%         hold on;
+%         y = sign(w * X);
+%         error = sum(y ~= t);
+%         disp(['Error: ' num2str(error)]);
+%         plotBoundary(w, true);
     end
     
 end

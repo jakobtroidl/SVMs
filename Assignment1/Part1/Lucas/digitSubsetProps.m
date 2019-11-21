@@ -12,12 +12,13 @@ disp(['Extracting properties of ' num2str(count) ' images...']);
 tic;
 for i = 1:size(imgs,3)
     
-    img = imgs(:,:,i);
-    props = regionprops(img, 'Eccentricity', 'FilledArea', 'Solidity');
+    img = imgs(:,:,i) > 0;
+    props = regionprops(img, 'Eccentricity', 'FilledArea', 'Solidity',...
+        'Area', 'ConvexArea', 'EquivDiameter', 'Extent');
     
     if (size(props,1) > 0)
         prop1(idx) = props.FilledArea;
-        prop2(idx) = props.Eccentricity;
+        prop2(idx) = props.Solidity;
         idx = idx + 1;
         if (idx > count)
             break
