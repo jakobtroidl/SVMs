@@ -36,7 +36,7 @@ t = [-ones(size(fa0')) ones(size(fa1'))];
 h = [X; ones(1,size(X,2))];
 htest = [X; ones(1,size(X,2))];
 
-maxIts = 1000;
+maxIts = 100;
 
 disp(['Training online with maxIts=' num2str(maxIts) '...']);
 tic;
@@ -51,7 +51,6 @@ toc;
 ybatch = perc(wbatch, h);
 
 percPlot(X, t, wonline, wbatch, yonline, ybatch, '2d');
-title(['Augmented; max. iterations: ' num2str(maxIts)]);
 
 % Use  the  feature  transformation
 % ?(x) : (x1,x2)?(1,x1,x2,x1^2,x2^2,x1*x2) and plot the data and decision 
@@ -76,7 +75,6 @@ toc;
 ybatch2 = perc(wbatch2, f);
 
 percPlot(X, t, wonline2, wbatch2, yonline2, ybatch2, 'nd');
-title(['Transformed; max. iterations: ' num2str(maxIts)]);
 
 % Train the perceptron using all 28?28 = 784 pixels of MNIST images of T as
 % input, resulting in augmented input vectors with dimensionality of m=785
@@ -97,7 +95,6 @@ toc;
 ybatch3 = perc(wbatch3, imX);
 
 percPlot(X, t, wonline3, wbatch3, yonline3, ybatch3, 'image');
-sgtitle(['Pixels; max. iterations: ' num2str(maxIts)]);
 
 % Compare the error rate (percentage of falsely classified input vectors)
 % of all three experiments (2 features, 5 features, whole images) on the
@@ -115,6 +112,5 @@ figure;
 test_categories = {'Aug. online', 'Aug. batch', ...
     'Trans. online', 'Trans. batch', ...
     'Pixels online', 'Pixels batch'};
-bar(test_errors);
-set(gca,'xticklabel',test_categories)
-ylabel('Error');
+test_categorical = categor
+bar(test_categories, test_errors);

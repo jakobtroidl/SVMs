@@ -1,5 +1,5 @@
 function plotBoundary(w, mode, style)
-% mode must be '2d', 'nd' or 'image'
+% mode must be 'augmented', 'transformed' or 'image'
 
 
 if nargin < 3
@@ -42,7 +42,8 @@ elseif strcmp(mode, 'image')
     img = data2im(w);
     mini = min(min(img));
     maxi = max(max(img));
-    imshow(img);
+    imshow((img - mini) ./ (maxi - mini));
+    xlabel '
     
 else
     error(['Unsupported mode=' mode]);
