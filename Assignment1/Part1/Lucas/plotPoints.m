@@ -1,4 +1,4 @@
-function plotPoints(X, t)
+function plotPoints(X, t, y)
 
 ax = X(1, t == -1);
 ay = X(2, t == -1);
