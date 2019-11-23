@@ -15,6 +15,11 @@ d = size(X,1);
 % bias = 0.1;
 w = zeros(1,d);
 
+% Shuffle
+indexes = randperm(N);
+X = X(:,indexes);
+t = t(indexes);
+
 if (online)
     learningRate = 1;
     

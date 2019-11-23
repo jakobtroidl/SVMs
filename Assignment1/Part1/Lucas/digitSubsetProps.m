@@ -19,6 +19,7 @@ for i = 1:size(imgs,3)
     if (size(props,1) > 0)
         prop1(idx) = props.FilledArea;
         prop2(idx) = props.Solidity;
+        imgsOut(:,:,idx) = imgs(:,:,i);
         idx = idx + 1;
         if (idx > count)
             break
