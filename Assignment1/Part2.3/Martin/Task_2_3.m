@@ -12,7 +12,7 @@ muY = ceil(imageSizeX/2);
 stDeviation = 2;    % default 2
 displayScale = 3;
 lambda = 0.1;   % ridge penalty
-x = 0:0.1:5;    % predictor
+x = 0:0.1:5;    % input for predictor (images)
 y = 2*x.^2 -groupID.*x + 1; % target values
 
 % Display parameters
@@ -73,33 +73,42 @@ for stDevIndex = 1:size(stDeviationArray, 2)
 
         figure;
         imshow(displayArray);
-        title([num2str(N) ' training images'], 'Interpreter', 'latex');
         truesize([imageSizeY*displayScale, imageSizeX*displayScale*N]);
         saveas(gcf,['Training_images.png']);
+        title('Training sample images', 'Interpreter', 'latex');
         
         % Plot the predicted ^y_i vs. the true y_i for the training images.
         figure;
         plot(x, y, 'g', 'LineWidth', lineWidth);
         hold on;
         plot(xTraining, yTrainPredicted, 'bx', 'LineWidth', lineWidth, 'MarkerSize', markerSize);
-        title(['Comparison of true target $y$ to ' num2str(N) ' train images $\hat{y}$ prediction'], 'Interpreter', 'latex');
         legend('true target $y$', 'predicted $\hat{y}$', 'Interpreter', 'latex');
         xlabel('Input x [px]', 'Interpreter', 'latex');
         ylabel('Output $y, \hat{y}$ [-]', 'Interpreter', 'latex');
-        text(min(x), max(y), ['Training error RSS = ' num2str(trainingErrorRSS) '[-]'], 'Interpreter', 'latex');
+        text(min(x), max(y), ['Training error RSS = ' num2str(trainingErrorRSS, 4) '[-]'], 'Interpreter', 'latex');
         grid on;
         saveas(gcf,['Evaluation_restricted_train_images.png']);
+        title('Comparison of true target $y$ to train sample images $\hat{y}$ prediction', 'Interpreter', 'latex');
         
         figure;
         plot(x, y, 'g', 'LineWidth', lineWidth);
         hold on;
         plot(x, yPredicted, 'bx', 'LineWidth', lineWidth, 'MarkerSize', markerSize);
-        title(['Comparison of true target $y$ to all ' num2str(size(x, 2)) ' images $\hat{y}$ prediction'], 'Interpreter', 'latex');
         legend('true target $y$', 'predicted $\hat{y}$', 'Interpreter', 'latex');
         xlabel('Input x [px]', 'Interpreter', 'latex');
         ylabel('Output $y, \hat{y}$ [-]', 'Interpreter', 'latex');
         grid on;
         saveas(gcf,['Evaluation_all_images.png']);
+        title('Comparison of true target $y$ to full sample images $\hat{y}$ prediction', 'Interpreter', 'latex');
+            
+        weightImage = reshape(wEstimate(2:end), imageSizeY, imageSizeX);
+        weightImage = weightImage - min(min(weightImage));
+        weightImage = weightImage./max(max(weightImage));
+        figure;
+        imshow(weightImage);
+        truesize([imageSizeY*displayScale*2, imageSizeX*displayScale*2]);
+        saveas(gcf,['WeightVectorImage.png']);
+        title('Weight vector estimate $w*$ image representation', 'Interpreter', 'latex');
     end
 end
 
@@ -107,6 +116,6 @@ figure;
 plot(stDeviationArray.^2, errorRSS, 'x', 'LineWidth', lineWidth, 'MarkerSize', markerSize);
 xlabel('Variance of circle center coordinates $\sigma [px^2]$', 'Interpreter', 'latex');
 ylabel('Full image sample error RSS [-]', 'Interpreter', 'latex');
-title(['Influence of circle coordinates variance to RSS of full image sample'], 'Interpreter', 'latex');
 grid on;
 saveas(gcf,['VarianceToRSS.png']);
+title('Influence of circle coordinates variance to RSS of full image sample', 'Interpreter', 'latex');
