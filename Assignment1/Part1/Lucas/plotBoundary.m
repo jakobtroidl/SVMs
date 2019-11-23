@@ -1,5 +1,5 @@
 function plotBoundary(w, mode, style)
-% mode must be 'augmented', 'transformed' or 'image'
+% mode must be '2d', 'nd' or 'image'
 
 
 if nargin < 3
