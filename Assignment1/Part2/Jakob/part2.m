@@ -45,12 +45,12 @@ while counter < max_iterations && e > threshold &&  c > 0.0009
     c = abs(e_old - e);
     e_old = e;
     
-    % generate console output
-%     out = [ 'Iterations: ', num2str(counter), ...
-%             ' Error: ', num2str(e), ... 
-%             sprintf(' w: [%d, %d, %d]', w) ];
-%         
-%     disp(out);
+    generate console output
+    out = [ 'Iterations: ', num2str(counter), ...
+            ' Error: ', num2str(e), ... 
+            sprintf(' w: [%d, %d, %d]', w) ];
+        
+    disp(out);
     counter = counter + 1;
 end
 
