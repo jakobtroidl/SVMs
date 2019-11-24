@@ -1,4 +1,4 @@
-function imgsOut = getDigit(imgs, labels, digit)
+function imgsOut = digit(imgs, labels, digit)
 
 imgsOut = imgs(:, :, labels == digit);
 

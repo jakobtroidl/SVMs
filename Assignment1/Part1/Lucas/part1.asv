@@ -1,17 +1,17 @@
 addpath(genpath(pwd));
 
-%% Read the data using available packages for your programming language
+% Read the data using available packages for your programming language
 % resp. simulation software
 [imgs, labels, imgsTest, labelsTest] = readMNISTauto();
 
-%% Choose two classes (e.g., all images of digits '0' and '1') for the
+% Choose two classes (e.g., all images of digits '0' and '1') for the
 % following two-class classification task
 imgs0 = digit(imgs, labels, 0);
 imgs1 = digit(imgs, labels, 1);
 imgs0test = digit(imgsTest, labelsTest, 0);
 imgs1test = digit(imgsTest, labelsTest, 1);
 
-%% Select a small subset T (with less than 1000 images in total) of
+% Select a small subset T (with less than 1000 images in total) of
 % corresponding images from the MNIST training set
 %
 % Extract two suitable image features from the subset T. For example
@@ -36,7 +36,7 @@ t = [-ones(size(fa0')) ones(size(fa1'))];
 h = [X; ones(1,size(X,2))];
 htest = [X; ones(1,size(X,2))];
 
-maxIts = 1000;
+maxIts = 100;
 
 disp(['Training online with maxIts=' num2str(maxIts) '...']);
 tic;
@@ -51,9 +51,8 @@ toc;
 ybatch = perc(wbatch, h);
 
 percPlot(X, t, wonline, wbatch, yonline, ybatch, '2d');
-title(['Augmented; max. iterations: ' num2str(maxIts)]);
 
-%% Use  the  feature  transformation
+% Use  the  feature  transformation
 % ?(x) : (x1,x2)?(1,x1,x2,x1^2,x2^2,x1*x2) and plot the data and decision 
 % boundary in the original data space R2 (see e.g. Figure 1) after
 % training. Hint: Sample the relevant region of the input space using a
@@ -76,9 +75,8 @@ toc;
 ybatch2 = perc(wbatch2, f);
 
 percPlot(X, t, wonline2, wbatch2, yonline2, ybatch2, 'nd');
-title(['Transformed; max. iterations: ' num2str(maxIts)]);
 
-%% Train the perceptron using all 28?28 = 784 pixels of MNIST images of T as
+% Train the perceptron using all 28?28 = 784 pixels of MNIST images of T as
 % input, resulting in augmented input vectors with dimensionality of m=785
 % and visualize w1,...,wm as a 28?28 gray-scale image (see Figure 2).
 imX = im2data(cat(3,imgs0,imgs1));
@@ -97,9 +95,8 @@ toc;
 ybatch3 = perc(wbatch3, imX);
 
 percPlot(X, t, wonline3, wbatch3, yonline3, ybatch3, 'image');
-sgtitle(['Pixels; max. iterations: ' num2str(maxIts)]);
 
-%% Compare the error rate (percentage of falsely classified input vectors)
+% Compare the error rate (percentage of falsely classified input vectors)
 % of all three experiments (2 features, 5 features, whole images) on the
 % independent MNIST test set.
 test_ho = perc(wonline, htest); % Augmented online
@@ -115,6 +112,5 @@ figure;
 test_categories = {'Aug. online', 'Aug. batch', ...
     'Trans. online', 'Trans. batch', ...
     'Pixels online', 'Pixels batch'};
-bar(test_errors);
-set(gca,'xticklabel',test_categories)
-ylabel('Error');
+test_categorical = categor
+bar(test_categories, test_errors);

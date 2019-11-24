@@ -41,7 +41,7 @@ if (online)
 
 else % batch
     learningRate = 0.01;
-    for ite = 1:maxIts
+    for epoch = 1:maxIts
         xt = X .* t;
         misclass = w * xt <= 0;
         if (sum(misclass) == 0)
