@@ -36,7 +36,7 @@ end
 plotBoundary(wbatch, mode, '-k');
 
 if ~strcmp(mode, 'image')
-   legend('Zeros', 'Ones', 'Incorrect online', 'Incorrect batch', ['Online (err=' num2str(erronline) ')'], ['Batch (err=' num2str(errbatch) ')']); 
+   legend('Zeros', 'Ones', 'Misclassified online', 'Misclassified batch', ['Online (err=' num2str(erronline) ')'], ['Batch (err=' num2str(errbatch) ')']); 
    xlabel('Filled area');
    ylabel('Solidity');
 else
