@@ -54,7 +54,15 @@ for stDevIndex = 1:size(stDeviationArray, 2)
     xTrainImagesArray = xImagesArray(:, 1:trainDataStep:trainDataStep*N);
     
     % Calculate w* in closed form
-    wEstimate = (xTrainImagesArray*xTrainImagesArray' + lambda*eye(imageSizeX*imageSizeY + 1))\xTrainImagesArray*tTraining';
+    % Original method
+    %wEstimate = (xTrainImagesArray*xTrainImagesArray' + lambda*eye(imageSizeX*imageSizeY + 1))\xTrainImagesArray*tTraining';
+    
+    
+    % Corrected for almost zero training data error -no singularity problem
+    wEstimate = pinv(xTrainImagesArray)'*tTraining';
+    
+    % Expoerimental setup with singularity problem
+    %wEstimate = (xTrainImagesArray*xTrainImagesArray')\xTrainImagesArray*tTraining';
     
     % Compute the training RSS error
     yTrainPredicted = wEstimate'*xTrainImagesArray;

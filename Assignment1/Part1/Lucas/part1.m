@@ -34,7 +34,7 @@ t = [-ones(size(fa0')) ones(size(fa1'))];
 
 % Augmented (homogeneous)
 h = [X; ones(1,size(X,2))];
-htest = [X; ones(1,size(X,2))];
+htest = [Xtest; ones(1,size(Xtest,2))];
 
 maxIts = 1000;
 
@@ -61,7 +61,7 @@ title(['Augmented; max. iterations: ' num2str(maxIts)]);
 % contour-function or a surface-plot to visualize the approximation of the
 % curvey= 0.
 f = transFts(X(1,:), X(2,:));
-ftest = transFts(Xtest(1,:), X(2,:));
+ftest = transFts(Xtest(1,:), Xtest(2,:));
 
 disp(['Training transformed online with maxIts=' num2str(maxIts) '...']);
 tic;
