@@ -38,7 +38,8 @@ while counter < max_iterations && e > threshold &&  c > 0.0009
     i = mod(counter, N) + 1;
     
     % update weight vector
-    w = w + 2 * (gamma * (counter + 1)^(-1/2)) * (t(i) - w' * X(:, i)) * X(:, i);
+    oi = w' * X(:, i);
+    w = w + 2 * (gamma * (counter + 1)^(-1/2)) * (t(i) - oi) * X(:, i);
     e = error(w, X, t);
     
     %check for convergence
@@ -64,6 +65,7 @@ end
 
 % compute w* in closed version
 w_closed = pinv(X') * t';
+%w_closed2 = X' \ t';
 t_out_closed = zeros(1, size(x, 2));
 for i = 1:size(x,2)
     t_out_closed(i) = w_closed' * (repmat(x(i), d + 1, 1) .^ power);

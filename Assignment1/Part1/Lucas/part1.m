@@ -97,7 +97,7 @@ toc;
 ybatch3 = perc(wbatch3, imX);
 
 percPlot(X, t, wonline3, wbatch3, yonline3, ybatch3, 'image');
-sgtitle(['Pixels; max. iterations: ' num2str(maxIts)]);
+%sgtitle(['Pixels; max. iterations: ' num2str(maxIts)]);
 
 %% Compare the error rate (percentage of falsely classified input vectors)
 % of all three experiments (2 features, 5 features, whole images) on the

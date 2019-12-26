@@ -24,12 +24,10 @@ if (online)
     learningRate = 1;
     
     for epoch = 1:maxIts
-        noMisclass = true;
         for i = 1:N
             xiti = X(:,i) * t(i);
             if w * xiti <= 0 % Misclassified
                 w = w + (learningRate * xiti)';
-                noMisclass = false;
                 
 %                 hold on;
 %                 scatter(X(end-1,i),X(end,i),'ok');
@@ -38,9 +36,6 @@ if (online)
 %                 disp(['Error: ' num2str(error)]);
 %                 plotBoundary(w, true);
             end
-        end
-        if ~noMisclass
-           break;
         end
     end
 
