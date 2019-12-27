@@ -64,9 +64,9 @@ count = 200;
 [s0, s1, s0test, s1test] = normal(s0, s1, s0test, s1test);
 
 % Input (X) and labels (t)
-X = [fa0' fa1'; s0' s1'];
-Xtest = [fa0test', fa1test'; s0test', s1test'];
-t = [-ones(size(fa0')) ones(size(fa1'))];
+X = [fa0 s0; fa1 s1];
+Xtest = [fa0test s0test; fa1test s1test];
+t = [-ones(size(fa0)); ones(size(fa1))];
 
 imgs = cat(3,imgs0,imgs1);
 imgsTest = cat(3,imgs0test,imgs1test);
@@ -77,10 +77,10 @@ plotdata(X,t);
 title('Select points to remove');
 [x,y] = ginput;
 close(f);
-dis = pdist2([x,y],X','euclidean');
+dis = pdist2([x,y],X,'euclidean');
 [~,indexes] = min(dis,[],2);
 
-X(:,indexes) = [];
+X(indexes,:) = [];
 t(indexes) = [];
 imgs(:,:,indexes) = [];
 

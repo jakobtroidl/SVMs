@@ -7,3 +7,4 @@ plotdata(X, t);
 legend('Zeros','Ones');
 title('Input data');
 
+[alpha, w0] = trainSVM(X, t);
