@@ -15,10 +15,10 @@ f = zeros(d,1);
 %% Constraints A*x <= b
 % In the SVM:     (w' * xi + w0)ti >= 1   (but for us, w and w0 are one)
 %             =>  w'*xi*ti >= 1
-%             =>  -w'*xi <= ti   (since ti is either -1 or +1)
-%             => -xi' * w <= ti   (so it looks more like quadprog)
-A = -X;
-b = t;
+%             =>  -w'*xi*ti <= -1   (since ti is either -1 or +1)
+%             => -(ti * xi)' * w <= -1   (so it looks more like quadprog)
+A = -(t .* X);
+b = -ones(N,1);
 
 [w,~,~,~,lambda] = quadprog(H, f, A, b);
 alpha = lambda.ineqlin;
