@@ -20,6 +20,9 @@ contour(x,y,z,[0 0],'-k');
 contour(x,y,z+1,[0 0],'--k');
 contour(x,y,z-1,[0 0],'--k');
 
+sv = X(a > 0.00001, :);
+scatter(sv(:,1),sv(:,2),'ko');
+
 if plotsurf
     surf(x,y,z);
     shading interp;
