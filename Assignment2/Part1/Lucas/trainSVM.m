@@ -3,25 +3,28 @@ function [alpha, w0] = trainSVM(X,t)
 d = size(X,2); % dimensions
 N = size(X,1); % size
 
-X = [X ones(N,1)];
-d = d+1;
+% Minimize:
+%   1/2 * x' * H * x  +  f' * x
+% With constraints:
+%   A   * x <=  b
+%   Aeq * x  =  beq
+xt = (X .* t)';
+H = xt' * xt;
+f = -ones(N,1);
 
+A = -eye(N,N);
+b = zeros(N,1);
 
-%% quadprog returns a vector x that minimizes (1/2 * x' * H * x) + (f' * x)
-H = eye(d);
-H(end,end) = 0;
-f = zeros(d,1);
+Aeq = t';
+beq = 0;
 
-%% Constraints A*x <= b
-% In the SVM:     (w' * xi + w0)ti >= 1   (but for us, w and w0 are one)
-%             =>  w'*xi*ti >= 1
-%             =>  -w'*xi*ti <= -1   (since ti is either -1 or +1)
-%             => -(ti * xi)' * w <= -1   (so it looks more like quadprog)
-A = -(t .* X);
-b = -ones(N,1);
+[alpha] = quadprog(H,f,A,b,Aeq,beq);
 
-[w,~,~,~,lambda] = quadprog(H, f, A, b);
-alpha = lambda.ineqlin;
-w0 = w(end);
+%% Getting w0
+% Based on a support vector 's'
+[~,s] = max(alpha);
+ts = t(s);
+xs = X(s,:);
+w0 = ts - ((alpha .* t)' * X * xs');
 
 end

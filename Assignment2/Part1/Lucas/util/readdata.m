@@ -1,18 +1,20 @@
-function [X, t, Xtest, imgs, imgsTest] = readdata()
+function [X, t, Xtest, ttest, imgs, imgsTest] = readdata()
 
 path = 'util/';
 pXin = [path 'Xin.mat'];
 ptin = [path 'tin.mat'];
 pXTin = [path 'XTin.mat'];
+ptTin = [path 'tTin.mat'];
 pimin = [path 'imin.mat'];
 pimTin = [path 'imTin.mat'];
 
 if isfile(pXin) && isfile(ptin) && isfile(pXTin) ...
-        && isfile(pimin) && isfile(pimTin)
+        && isfile(ptTin) && isfile(pimin) && isfile(pimTin)
     
     X = load(pXin).Xin;
     t = load(ptin).tin;
     Xtest = load(pXTin).XTin;
+    ttest = load(ptTin).tTin;
     imgs = load(pimin).imin;
     imgsTest = load(pimTin).imTin;
     return;
@@ -67,6 +69,7 @@ count = 200;
 X = [fa0 s0; fa1 s1];
 Xtest = [fa0test s0test; fa1test s1test];
 t = [-ones(size(fa0)); ones(size(fa1))];
+ttest = t;
 
 imgs = cat(3,imgs0,imgs1);
 imgsTest = cat(3,imgs0test,imgs1test);
@@ -88,12 +91,14 @@ imgs(:,:,indexes) = [];
 Xin = X;
 tin = t;
 XTin = Xtest;
+tTin = ttest;
 imin = imgs;
 imTin = imgsTest;
 
 save(pXin,'Xin');
 save(ptin,'tin');
 save(pXTin,'XTin');
+save(ptTin,'tTin');
 save(pimin,'imin');
 save(pimTin,'imTin');
 
