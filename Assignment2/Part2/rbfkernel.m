@@ -16,5 +16,5 @@ function [k] = rbfkernel(x1, x2, sigma)
     bMinus = repmat(x2(:, 2)', size(x1, 1), 1);
     b = bPlus - bMinus;
     
-    k = exp(-(sqrt(a.^2 + b.^2)) / (sigma^2));
+    k = exp(-(a.^2 + b.^2) / (sigma^2));
 end

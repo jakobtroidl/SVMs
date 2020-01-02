@@ -25,6 +25,6 @@ beq = 0;
 [~,s] = max(alpha);
 ts = t(s);
 xs = X(s,:);
-w0 = ts - ((alpha .* t)' * X * xs');
+w0 = ts - ((alpha .* t)' * kernel(X, xs)); % * X * xs'
 
 end

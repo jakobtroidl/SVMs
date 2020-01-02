@@ -63,7 +63,7 @@ end
 
 %% Part 2
 X = X';t = t';Xtest = Xtest';ttest = ttest';
-sigma = 5;
+sigma = 0.5;
 kernelFunc = @(x1, x2)rbfkernel(x1, x2, sigma);
 
 [alpha, w0] = trainSVM2(X, t, kernelFunc);
@@ -72,7 +72,7 @@ kernelFunc = @(x1, x2)rbfkernel(x1, x2, sigma);
 figure;
 plotdata(X, t);
 title('Input data');
-sv = X(alpha > 110, :);
+sv = X(alpha > 0.00001, :);
 scatter(sv(:,1),sv(:,2),'ko');
 legend('Zeros','Ones', 'Support vectors');
 
@@ -80,9 +80,9 @@ legend('Zeros','Ones', 'Support vectors');
 y = discriminant2(alpha, w0, X, t, Xtest, kernelFunc);
 figure;
 plotdata(X, t, [0.75 0.75 0.75], [0.75 0.75 0.75]);
-plotdata(Xtest, sign(y - mean(y)));
+plotdata(Xtest, sign(y));
 title('Test data');
-miscl = sign(y - mean(y)) ~= ttest;
+miscl = sign(y) ~= ttest;
 scatter(Xtest(miscl,1), Xtest(miscl,2), 'ko');
 legend('Zeros training','Ones training','Zeros test', ...
     'Ones test','Test misclassifications');
@@ -92,12 +92,12 @@ legend('Zeros training','Ones training','Zeros test', ...
 w = (alpha .* t)' * X;
 figure;
 plotdata(X,t);
-plotboundary(alpha, w0, X, t);
+plotboundary2(alpha, w0, X, t, false, kernelFunc);
 title('Decision boundary');
 
 % Plot surface
 figure;
 plotdata(X,t);
-plotboundary(alpha, w0, X, t, true);
+plotboundary2(alpha, w0, X, t, true, kernelFunc);
 title('Discriminant function surface');
 
