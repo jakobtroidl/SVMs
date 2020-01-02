@@ -94,7 +94,7 @@ ylabel('Solidity [-]');
 figure;
 plotdata(X,t);
 plotboundary2(alpha, w0, X, t, 'surf', kernelFunc);
-title(['Discriminant function surface for $\sigma$ = ' num2str(sigma)]);
+title(['Discriminant function surface for $\sigma$ = ' num2str(sigma) ' [-]']);
 xlabel('Filled area [-]');
 ylabel('Solidity [-]');
 
@@ -112,7 +112,7 @@ sigmaString = [];
 for i = 1:size(sigmaRange, 2)
     sigmaString = [sigmaString num2str(sigmaRange(i), 2) ', '];
 end
-title(['Decision boundary for $\sigma$ = ' sigmaString(1:end-2)]);
+title(['Decision boundary for $\sigma$ = ' sigmaString(1:end-2) ' [-]']);
 xlabel('Filled area [-]');
 ylabel('Solidity [-]');
 legend('Zeros','Ones', 'Decision boundaries');
