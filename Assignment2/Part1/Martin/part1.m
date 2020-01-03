@@ -1,7 +1,9 @@
+clear all;
+close all;
 addpath(genpath(pwd));
 
 %% Choose a suitable training set of linearly separable data xi ? R2 with 
-% targets ti, where i ? {1, ...,N},N ? 100. For example, you can use 
+% targets ti, where i ? {1, ...,N},N >= 100. For example, you can use 
 % a linearly separable subset of T of assignment1.
 [imgs, labels, imgsTest, labelsTest] = readMNISTauto();
 
@@ -11,8 +13,8 @@ imgs1 = digit(imgs, labels, 1);
 imgs0test = digit(imgsTest, labelsTest, 0);
 imgs1test = digit(imgsTest, labelsTest, 1);
 
-count = 100;
-countReserve = round(1.1*count)
+count = 200/2;
+countReserve = round(1.1*count);
 [imgs0, fa0, s0] = digitSubsetProps(imgs0, countReserve);
 [imgs1, fa1, s1] = digitSubsetProps(imgs1, countReserve);
 [imgs0test, fa0test, s0test] = digitSubsetProps(imgs0test, countReserve);
@@ -26,6 +28,7 @@ countReserve = round(1.1*count)
 X = [fa0' fa1'; s0' s1'];
 Xtest = [fa0test', fa1test'; s0test', s1test'];
 t = [-ones(size(fa0')) ones(size(fa1'))];
+ttest = [-ones(size(fa0')) ones(size(fa1'))];
 
 % Augmented (homogeneous)
 h = [X; ones(1,size(X,2))];
@@ -43,7 +46,7 @@ test_errors = ybatch ~= t;
 falselyClassifiedIDs = find(test_errors);
 
 % Remove falsely classified samples from X and t
-for i = 1:size(falselyClassifiedIDs, 2)
+for i = size(falselyClassifiedIDs, 2):-1:1
     X(:, falselyClassifiedIDs(i)) = [];
     t(:, falselyClassifiedIDs(i)) = [];
 end
