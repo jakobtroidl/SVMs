@@ -1,1 +1,6 @@
 *.asv
+*.idx3-ubyte
+
+Assignment2/Part2/t10k-labels.idx1-ubyte
+
+*.idx1-ubyte

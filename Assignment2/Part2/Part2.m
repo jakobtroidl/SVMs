@@ -14,8 +14,8 @@ imgs1 = digit(imgs, labels, 1);
 imgs0test = digit(imgsTest, labelsTest, 0);
 imgs1test = digit(imgsTest, labelsTest, 1);
 
-count = 200/2;
-countReserve = round(1.1*count);
+count = 200;
+countReserve = 200; %round(1.1*count);
 [imgs0, fa0, s0] = digitSubsetProps(imgs0, countReserve);
 [imgs1, fa1, s1] = digitSubsetProps(imgs1, countReserve);
 [imgs0test, fa0test, s0test] = digitSubsetProps(imgs0test, countReserve);
@@ -65,9 +65,10 @@ end
 %% Part 2 - Bullet 1
 X = X';t = t';Xtest = Xtest';ttest = ttest';
 sigma = 0.2;
+C = 50; % regularization parameter
 kernelFunc = @(x1, x2)rbfkernel(x1, x2, sigma);
 
-[alpha, w0] = trainSVM2(X, t, kernelFunc);
+[alpha, w0] = trainSVM2(X, t, kernelFunc, C);
 
 % Classify test points
 y = discriminant2(alpha, w0, X, t, Xtest, kernelFunc);
@@ -105,7 +106,7 @@ hold on;
 sigmaRange = logspace(-1, 1, 5);
 for sigma = sigmaRange
     kernelFunc = @(x1, x2)rbfkernel(x1, x2, sigma);
-    [alpha, w0] = trainSVM2(X, t, kernelFunc);
+    [alpha, w0] = trainSVM2(X, t, kernelFunc, C);
     plotboundary2(alpha, w0, X, t, 'noMargins', kernelFunc);
 end
 sigmaString = [];

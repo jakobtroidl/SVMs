@@ -1,4 +1,4 @@
-function [alpha, w0] = trainSVM2(X, t, kernel)
+function [alpha, w0] = trainSVM2(X, t, kernel, C)
 
 d = size(X,2); % dimensions
 N = size(X,1); % size
@@ -12,13 +12,16 @@ N = size(X,1); % size
 H = kernel(X, X).*t.*t';
 f = -ones(N,1);
 
-A = -eye(N,N);
-b = zeros(N,1);
+%A = -eye(N,N);
+%b = zeros(N,1);
 
 Aeq = t';
 beq = 0;
 
-[alpha] = quadprog(H,f,A,b,Aeq,beq);
+lb = zeros(N, 1);
+ub = ones(N, 1) * C;
+
+[alpha] = quadprog(H,f,[],[],Aeq,beq,lb,ub);
 
 %% Getting w0
 % Based on a support vector 's'
