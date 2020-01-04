@@ -19,9 +19,10 @@ figure;
 plotdata(X, t, [0.75 0.75 0.75], [0.75 0.75 0.75]);
 plotdata(Xtest, sign(y));
 miscl = sign(y) ~= ttest;
-scatter(Xtest(miscl,1), Xtest(miscl,2), 'ko');
+scatter(Xtest(miscl,1), Xtest(miscl,2), 'bo');
 legend('Zeros training','Ones training','Zeros test', ...
     'Ones test','Test misclassifications');
+plotboundary(alpha, w0, X, t);
 
 
 %% Plot boundary

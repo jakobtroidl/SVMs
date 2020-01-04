@@ -1,6 +1,6 @@
 function plotboundary(a, w0, X, t, plotsurf)
 % a = alpha
-% Had to rename to a because we
+% Had to rename to 'a' because we
 %   want to use the command 'alpha'
 
 if nargin < 5
