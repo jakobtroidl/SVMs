@@ -16,8 +16,8 @@ figure;
 plotdata(X, t, [0.75 0.75 0.75], [0.75 0.75 0.75]);
 plotdata(Xtest, ttest);
 title('Test data');
-xlabel('Filled area [-]');
-ylabel('Solidity [-]');
+xlabel('Filled area');
+ylabel('Solidity');
 miscl = sign(y) ~= ttest;
 scatter(Xtest(miscl,1), Xtest(miscl,2), 'bo');
 plotboundary(alpha, w0, X, t, kernelFunc);
@@ -29,16 +29,16 @@ figure;
 plotdata(X,t);
 plotboundary(alpha, w0, X, t, kernelFunc);
 title(['Decision boundary for $\sigma$ = ' num2str(sigma) ' and C = ' num2str(C)]);
-xlabel('Filled area [-]');
-ylabel('Solidity [-]');
+xlabel('Filled area');
+ylabel('Solidity');
 
 % Plot surface
 figure;
 plotdata(X,t);
 plotboundary(alpha, w0, X, t, kernelFunc, 'surf');
-title(['Discriminant function surface for $\sigma$ = ' num2str(sigma) ' [-] and C = ' num2str(C)]);
-xlabel('Filled area [-]');
-ylabel('Solidity [-]');
+title(['Discriminant function surface for $\sigma$ = ' num2str(sigma) ' and C = ' num2str(C)]);
+xlabel('Filled area');
+ylabel('Solidity');
 
 %% Part 2 - Bullet 2 - Try different values for sigma.
 figure;
@@ -56,8 +56,8 @@ for i = 1:numel(sigmaRange)
     plotboundary(alpha, w0, X, t, kernelFunc, 'nomargins', colors(i,:));
     legendstrs{2+i} = ['$\sigma$ = ' num2str(sigma)];
 end
-title(['Decision boundary for various \sigma values [-] and C = ' num2str(C)]);
-xlabel('Filled area [-]');
-ylabel('Solidity [-]');
+title(['Decision boundary for various $\sigma$ values and C = ' num2str(C)]);
+xlabel('Filled area');
+ylabel('Solidity');
 legend(legendstrs,'Interpreter','latex');
 text(0, 0, 'Higher values of $\sigma$ correspond to straighter decision boundaries.')
