@@ -26,7 +26,7 @@ legend('Zeros training','Ones training','Zeros test', ...
 % Plot boundary
 figure;
 plotdata(X,t);
-plotboundary2(alpha, w0, X, t, '', kernelFunc);
+plotboundary2(alpha, w0, X, t, kernelFunc);
 title(['Decision boundary for $\sigma$ = ' num2str(sigma) ' and C = ' num2str(C)]);
 xlabel('Filled area [-]');
 ylabel('Solidity [-]');
@@ -34,7 +34,7 @@ ylabel('Solidity [-]');
 % Plot surface
 figure;
 plotdata(X,t);
-plotboundary2(alpha, w0, X, t, 'surf', kernelFunc);
+plotboundary2(alpha, w0, X, t, kernelFunc, 'surf');
 title(['Discriminant function surface for $\sigma$ = ' num2str(sigma) ' [-] and C = ' num2str(C)]);
 xlabel('Filled area [-]');
 ylabel('Solidity [-]');
@@ -44,17 +44,19 @@ figure;
 plotdata(X,t);
 hold on;
 sigmaRange = logspace(-1, 1, 5);
-for sigma = sigmaRange
+colors = lines(numel(sigmaRange));
+legendstrs = cell(2+numel(sigmaRange),1);
+legendstrs{1} = 'Zeros';
+legendstrs{2} = 'Ones';
+for i = 1:numel(sigmaRange)
+    sigma = sigmaRange(i);
     kernelFunc = @(x1, x2)rbfkernel(x1, x2, sigma);
     [alpha, w0] = trainSVM2(X, t, kernelFunc, C);
-    plotboundary2(alpha, w0, X, t, 'noMargins', kernelFunc);
+    plotboundary2(alpha, w0, X, t, kernelFunc, 'noMargins', colors(i,:));
+    legendstrs{2+i} = ['$\sigma$ = ' num2str(sigma)];
 end
-sigmaString = [];
-for i = 1:size(sigmaRange, 2)
-    sigmaString = [sigmaString num2str(sigmaRange(i), 2) ', '];
-end
-title(['Decision boundary for $\sigma$ = ' sigmaString(1:end-2) ' [-] and C = ' num2str(C)]);
+title(['Decision boundary for various \sigma values [-] and C = ' num2str(C)]);
 xlabel('Filled area [-]');
 ylabel('Solidity [-]');
-legend('Zeros','Ones', 'Decision boundaries');
+legend(legendstrs);
 text(0, 0, 'Higher values of $\sigma$ correspond to straighter decision boundaries.')
