@@ -58,5 +58,5 @@ end
 title(['Decision boundary for various \sigma values [-] and C = ' num2str(C)]);
 xlabel('Filled area [-]');
 ylabel('Solidity [-]');
-legend(legendstrs);
+legend(legendstrs,'Interpreter','latex');
 text(0, 0, 'Higher values of $\sigma$ correspond to straighter decision boundaries.')
