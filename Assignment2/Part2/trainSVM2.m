@@ -25,7 +25,13 @@ ub = ones(N, 1) * C;
 
 %% Getting w0
 % Based on a support vector 's'
-[~,s] = max(alpha);
+%  Hint: Note that with C<? you have to take care about selecting a
+% support vector xs with margin |d(xs)| = 1 to calculate w0.
+
+%[~,s] = max(alpha);
+[~,i] = sort(abs(1 - abs(alpha)));
+s = i(1);
+
 ts = t(s);
 xs = X(s,:);
 w0 = ts - ((alpha .* t)' * kernel(X, xs)); % * X * xs'
