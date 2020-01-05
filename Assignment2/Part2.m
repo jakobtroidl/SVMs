@@ -5,7 +5,7 @@ addpath('readmnist')
 
 %% Part 2 - Bullet 1
 sigma = 0.2;
-C = 50; % regularization parameter
+C = Inf; % regularization parameter
 kernelFunc = @(x1, x2)rbfkernel(x1, x2, sigma);
 
 [alpha, w0] = trainSVM(X, t, kernelFunc, C);
@@ -14,12 +14,13 @@ kernelFunc = @(x1, x2)rbfkernel(x1, x2, sigma);
 y = discriminant(alpha, w0, X, t, Xtest, kernelFunc);
 figure;
 plotdata(X, t, [0.75 0.75 0.75], [0.75 0.75 0.75]);
-plotdata(Xtest, sign(y));
+plotdata(Xtest, ttest);
 title('Test data');
 xlabel('Filled area [-]');
 ylabel('Solidity [-]');
 miscl = sign(y) ~= ttest;
 scatter(Xtest(miscl,1), Xtest(miscl,2), 'bo');
+plotboundary(alpha, w0, X, t, kernelFunc);
 legend('Zeros training','Ones training','Zeros test', ...
     'Ones test','Test misclassifications');
 
