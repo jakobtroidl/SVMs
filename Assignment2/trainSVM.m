@@ -34,11 +34,11 @@ end
 
 %% Getting w0
 % Based on a support vector 's'
-% Hint: Note that with C<? you have to take care about selecting a
+% Hint: Note that with C<Inf you have to take care about selecting a
 % support vector xs with margin |d(xs)| = 1 to calculate w0.
 
-%[~,s] = max(alpha);
-[~,s] = min(abs(1 - abs(alpha)));
+[~,s] = max(alpha);
+%[~,s] = min(abs(1 - abs(alpha)));
 
 ts = t(s);
 xs = X(s,:);
