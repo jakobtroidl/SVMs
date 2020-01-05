@@ -9,7 +9,7 @@ N = size(X,1); % size
 %   A   * x <=  b
 %   Aeq * x  =  beq
 
-H = kernel(X, X).*t.*t';
+H = kernel(X, X).*(t*t');
 f = -ones(N,1);
 
 %A = -eye(N,N);
