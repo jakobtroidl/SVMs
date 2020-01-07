@@ -37,8 +37,13 @@ end
 % Hint: Note that with C<Inf you have to take care about selecting a
 % support vector xs with margin |d(xs)| = 1 to calculate w0.
 
-[~,s] = max(alpha);
-%[~,s] = min(abs(1 - abs(alpha)));
+if nargin == 2
+    [~,s] = max(alpha);
+else
+    % prevent the system from a support vector with alpha = C
+    idx = alpha < C - 0.01;
+    [~,s] = max(alpha .* idx);
+end
 
 ts = t(s);
 xs = X(s,:);
