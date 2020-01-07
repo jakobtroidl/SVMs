@@ -21,8 +21,10 @@ if nargin == 2
     
     A = -eye(N,N);
     b = zeros(N,1);
+    
+    options = optimoptions(@quadprog, 'MaxIter', 10000);
 
-    [alpha] = quadprog(H,f,A,b,Aeq,beq);
+    [alpha] = quadprog(H,f,A,b,Aeq,beq,[],[],[],options);
 else
     H = kernel(X, X).*(t*t');
     
