@@ -62,9 +62,11 @@ for k = 1:M
     
 end
 
+% calculate the average error for Perc and SVM over all M trained SVMs and Perc's 
 avg_error_svm = (sum(incorr_SVM) / M) * 100;
 avg_error_perc = (sum(incorr_Perc) / M) * 100;
 
+% plot results
 X = categorical({'Avg error SVM','Avg error Perc'});
 Y = [avg_error_svm avg_error_perc];
 bar(X,Y, 0.4)
