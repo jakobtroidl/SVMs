@@ -1,4 +1,4 @@
-function [alpha, w0] = trainSVM(X,t,kernel,C)
+function [alpha, w0] = trainSVM(X,t,C,kernel)
 
 d = size(X,2); % dimensions
 N = size(X,1); % size
@@ -24,7 +24,12 @@ if nargin == 2
 
     [alpha] = quadprog(H,f,A,b,Aeq,beq);
 else
-    H = kernel(X, X).*(t*t');
+    if nargin == 3
+        xt = (X .* t)';
+        H = xt' * xt;
+    else
+        H = kernel(X, X) .* (t * t');
+    end
     
     lb = zeros(N, 1);
     ub = ones(N, 1) * C;
@@ -48,7 +53,7 @@ end
 ts = t(s);
 xs = X(s,:);
 
-if nargin == 2
+if nargin <= 3
     w0 = ts - ((alpha .* t)' * X * xs');
 else
     w0 = ts - ((alpha .* t)' * kernel(X, xs)); % * X * xs'

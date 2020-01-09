@@ -43,10 +43,10 @@ incorr_SVM = zeros(M, 1);
 
 for k = 1:M
     %% SVM
-    % kernel = @(x1, x2)rbfkernel(x1, x2, sigma);
-    % C = 50;
+    %kernel = @(x1, x2)rbfkernel(x1, x2, sigma);
+    C = Inf;
     % train a linear SVM
-    [alpha, w0] = trainSVM(train{k}', trainL{k});
+    [alpha, w0] = trainSVM(train{k}', trainL{k}, C);
     
     %% Perceptron
     maxIts = 10000;

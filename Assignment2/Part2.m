@@ -28,7 +28,7 @@ legend('Zeros training','Ones training','Zeros test', ...
 figure;
 plotdata(X,t);
 plotboundary(alpha, w0, X, t, kernelFunc);
-title(['Decision boundary for $\sigma$ = ' num2str(sigma) ' and C = ' num2str(C)]);
+title(['Decision boundary for \sigma = ' num2str(sigma) ' and C = ' num2str(C)]);
 xlabel('Filled area');
 ylabel('Solidity');
 
@@ -36,7 +36,7 @@ ylabel('Solidity');
 figure;
 plotdata(X,t);
 plotboundary(alpha, w0, X, t, kernelFunc, 'surf');
-title(['Discriminant function surface for $\sigma$ = ' num2str(sigma) ' and C = ' num2str(C)]);
+title(['Discriminant function surface for \sigma = ' num2str(sigma) ' and C = ' num2str(C)]);
 xlabel('Filled area');
 ylabel('Solidity');
 
@@ -56,8 +56,8 @@ for i = 1:numel(sigmaRange)
     plotboundary(alpha, w0, X, t, kernelFunc, 'nomargins', colors(i,:));
     legendstrs{2+i} = ['$\sigma$ = ' num2str(sigma)];
 end
-title(['Decision boundary for various $\sigma$ values and C = ' num2str(C)]);
+title(['Decision boundary for various \sigma values and C = ' num2str(C)]);
 xlabel('Filled area');
 ylabel('Solidity');
 legend(legendstrs,'Interpreter','latex');
-text(0, 0, 'Higher values of $\sigma$ correspond to straighter decision boundaries.')
+text(0, 0, 'Higher values of \sigma correspond to straighter decision boundaries.')

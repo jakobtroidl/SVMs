@@ -35,7 +35,7 @@ end
 
 if strcmp(mode, 'surf')
     surf(x,y,z);
-    zlabel('Discriminant output y [-]');
+    zlabel('Discriminant output y');
     shading interp;
     alpha 0.5;
     view(3);
