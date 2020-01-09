@@ -18,13 +18,11 @@ f = -ones(N,1);
 if nargin == 2
     xt = (X .* t)';
     H = xt' * xt;
-    
+
     A = -eye(N,N);
     b = zeros(N,1);
-    
-    options = optimoptions(@quadprog, 'MaxIter', 10000);
 
-    [alpha] = quadprog(H,f,A,b,Aeq,beq,[],[],[],options);
+    [alpha] = quadprog(H,f,A,b,Aeq,beq);
 else
     H = kernel(X, X).*(t*t');
     
