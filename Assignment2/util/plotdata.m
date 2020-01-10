@@ -21,5 +21,7 @@ hor = (maxi(1) - mini(1)) / 10;
 ver = (maxi(2) - mini(2)) / 10;
 xlim([mini(1)-hor maxi(1)+hor]);
 ylim([mini(2)-ver maxi(2)+ver]);
+xlabel('Filled area');
+ylabel('Solidity');
 
 end
