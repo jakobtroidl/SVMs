@@ -6,13 +6,19 @@
 % and discriminant to pass the kernel to these functions2.
 
 function [k] = rbfkernel(x1, x2, sigma)
-    aPlus = repmat(x1(:, 1), 1, size(x2, 1));
-    aMinus = repmat(x2(:, 1)', size(x1, 1), 1);
-    a = aPlus - aMinus;
+
+    x = size(x1, 1);
+    y = size(x2, 1);
+    dim = size(x1, 2);
+    components = zeros(x, y, dim);
     
-    bPlus = repmat(x1(:, 2), 1, size(x2, 1));
-    bMinus = repmat(x2(:, 2)', size(x1, 1), 1);
-    b = bPlus - bMinus;
+    for i = 1:dim
+        aPlus = repmat(x1(:, i), 1, y);
+        aMinus = repmat(x2(:, i)', x, 1);
+        components(:, :, i) = aPlus - aMinus;
+    end
     
-    k = exp(-(a.^2 + b.^2) / (sigma^2));
+    norm = sum(components .^ 2, 3);
+    k = exp( - norm / (sigma ^ 2));
+     
 end

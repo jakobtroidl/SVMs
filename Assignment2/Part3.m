@@ -31,40 +31,16 @@ imgs_test_01 = im2data(test(:, :, idx)); % filter 0 and 1 images
 labels_test_01 = testL(idx, :); % filter 0 and 1 labels
 labels_test_01 = (labels_test_01 * 2) - 1; % scale labels to [-1; 1]
 
-testSize = size(imgs_test_01, 2);
-
 %% For all k train the SVM and the perceptron (see assignment1) using Tk
 % and calculate the test error rate Rk on the MNIST test set for both
 % models (using all available images of the two respective classes in the
 % testset)
 
-incorr_Perc = zeros(M, 1);
-incorr_SVM = zeros(M, 1);
-
-for k = 1:M
-    %% SVM
-    % kernel = @(x1, x2)rbfkernel(x1, x2, sigma);
-    % C = 50;
-    % train a linear SVM
-    [alpha, w0] = trainSVM(train{k}', trainL{k});
-    
-    %% Perceptron
-    maxIts = 10000;
-    mode = 'batch';
-    w = percTrain(train{k}, trainL{k}', maxIts, mode);
-    
-    %% Comparison
-    ySVM = discriminant(alpha, w0, train{k}', trainL{k}, imgs_test_01');
-    incorr_SVM(k) = sum(sign(ySVM) ~= labels_test_01) / testSize;
-   
-    yPerc = perc(w, imgs_test_01);
-    incorr_Perc(k) = sum(yPerc' ~= labels_test_01) / testSize;
-    
-end
-
+ %% Compare average error of Linear SVM (no kernel, no slack variable) with perceptron
+[errorLinearSVM, errorLinearPerc] = evaluate(train, trainL, imgs_test_01, labels_test_01);
 % calculate the average error for Perc and SVM over all M trained SVMs and Perc's 
-avg_error_svm = (sum(incorr_SVM) / M) * 100;
-avg_error_perc = (sum(incorr_Perc) / M) * 100;
+avg_error_svm = (sum(errorLinearSVM, 3) / M) * 100;
+avg_error_perc = (sum(errorLinearPerc, 3) / M) * 100;
 
 % plot results
 X = categorical({'Avg error SVM','Avg error Perc'});
@@ -72,3 +48,12 @@ Y = [avg_error_svm avg_error_perc];
 bar(X,Y, 0.4)
 title('Average error comparison of Perceptron and SVM (linear kernel, no slack variables)')
 ylabel('% of misclassified samples')
+
+%% Explore 2D parameter space of (sigma, C) of SVM and plot average errors
+
+C = [0.5 1 3 5 7 10 20 50 Inf];
+sigma = [0.5 1 2 3 5 7 10 20 30];
+
+[errorSVM, errorPerc] = evaluate(train, trainL, imgs_test_01, labels_test_01, C, sigma);
+avg_error_svm = (sum(errorSVM, 3) ./ M) * 100;
+bar3(avg_error_svm)
