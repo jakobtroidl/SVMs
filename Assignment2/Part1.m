@@ -17,7 +17,8 @@ plotdata(Xtest, sign(y));
 miscl = sign(y) ~= ttest;
 scatter(Xtest(miscl,1), Xtest(miscl,2), 'bo');
 legend('Zeros training','Ones training','Zeros test', ...
-    'Ones test','Test misclassifications');
+    'Ones test','Test misclassifications', 'Decision boundary', ...
+    '|Discriminant|=1', 'Support vectors');
 plotboundary(alpha, w0, X, t);
 
 
@@ -31,3 +32,5 @@ plotboundary(alpha, w0, X, t);
 figure;
 plotdata(X,t);
 plotboundary(alpha, w0, X, t, [], 'surf');
+legend('Zeros', 'Ones', 'Decision boundary', '|Discriminant|=1', ...
+    'Support vectors', 'Location', 'best');

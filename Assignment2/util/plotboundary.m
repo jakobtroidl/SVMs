@@ -27,7 +27,7 @@ z = reshape(z, len, len);
 contour(x,y,z,[0 0],'-','Color',color);
 if ~strcmp(mode, 'nomargins')
     contour(x,y,z+1,[0 0],'--','Color',color);
-    contour(x,y,z-1,[0 0],'--','Color',color);
+    contour(x,y,z-1,[0 0],'--','Color',color,'HandleVisibility','off');
     
     sv = X(a > 0.00001, :);
     scatter(sv(:,1),sv(:,2),'ko');
@@ -35,7 +35,7 @@ end
 
 if strcmp(mode, 'surf')
     surf(x,y,z);
-    zlabel('Discriminant output y [-]');
+    zlabel('Discriminant output y');
     shading interp;
     alpha 0.5;
     view(3);
