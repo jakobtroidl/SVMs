@@ -70,5 +70,5 @@ avg_error_perc = (sum(incorr_Perc) / M) * 100;
 X = categorical({'Avg error SVM','Avg error Perc'});
 Y = [avg_error_svm avg_error_perc];
 bar(X,Y, 0.4)
-title('Average error comparison of Perc and SVM(linear kernel, no slack variables)')
+title('Average error comparison of Perceptron and SVM (linear kernel, no slack variables)')
 ylabel('% of misclassified samples')
