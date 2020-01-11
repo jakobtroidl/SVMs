@@ -5,7 +5,7 @@ addpath('readmnist')
 % by selecting images from the MNIST training set, where each Tk consists
 % of not more than N=70 images
 
-M = 150; %  # of training sets
+M = 3; %  # of training sets
 N = 70; %  # of images per training set
 train = cell(M,1);
 trainL = cell(M,1); % labels
@@ -31,44 +31,59 @@ imgs_test_01 = im2data(test(:, :, idx)); % filter 0 and 1 images
 labels_test_01 = testL(idx, :); % filter 0 and 1 labels
 labels_test_01 = (labels_test_01 * 2) - 1; % scale labels to [-1; 1]
 
-testSize = size(imgs_test_01, 2);
-
 %% For all k train the SVM and the perceptron (see assignment1) using Tk
 % and calculate the test error rate Rk on the MNIST test set for both
 % models (using all available images of the two respective classes in the
 % testset)
 
-incorr_Perc = zeros(M, 1);
-incorr_SVM = zeros(M, 1);
-
-for k = 1:M
-    %% SVM
-    %kernel = @(x1, x2)rbfkernel(x1, x2, sigma);
-    C = Inf;
-    % train a linear SVM
-    [alpha, w0] = trainSVM(train{k}', trainL{k}, C);
-    
-    %% Perceptron
-    maxIts = 10000;
-    mode = 'batch';
-    w = percTrain(train{k}, trainL{k}', maxIts, mode);
-    
-    %% Comparison
-    ySVM = discriminant(alpha, w0, train{k}', trainL{k}, imgs_test_01');
-    incorr_SVM(k) = sum(sign(ySVM) ~= labels_test_01) / testSize;
-   
-    yPerc = perc(w, imgs_test_01);
-    incorr_Perc(k) = sum(yPerc' ~= labels_test_01) / testSize;
-    
-end
+ %% Compare average error of Linear SVM (no kernel, no slack variable) with perceptron
+tic
+errorLinearSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet');
+errorLinearPerc = evaluatePercs(train, trainL, imgs_test_01, labels_test_01);
+toc
 
 % calculate the average error for Perc and SVM over all M trained SVMs and Perc's 
-avg_error_svm = (sum(incorr_SVM) / M) * 100;
-avg_error_perc = (sum(incorr_Perc) / M) * 100;
+avg_error_svm = (sum(errorLinearSVM, 3) / M) * 100;
+avg_error_perc = (sum(errorLinearPerc, 3) / M) * 100;
 
 % plot results
 X = categorical({'Avg error SVM','Avg error Perc'});
 Y = [avg_error_svm avg_error_perc];
-bar(X,Y, 0.4)
-title('Average error comparison of Perc and SVM(linear kernel, no slack variables)')
+
+figure, bar(X,Y, 0.4)
+title('Average error comparison of Perceptron and SVM (linear kernel, no slack variables)')
 ylabel('% of misclassified samples')
+
+%% Explore 2D parameter space of (sigma, C) of SVM and plot average errors. 
+%Analyse the effect of changing C or ? on the average test error rate Ravg of the SVM.
+
+C = [0.5 1 3 5 7 10 20 50 Inf];
+sigma = [0.5 1 2 3 5 7 10 20 30];
+
+
+tic
+errorSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet', C, sigma);
+toc 
+
+avg_error_svm = (sum(errorSVM, 3) ./ M) * 100;
+figure, bar3(avg_error_svm);
+set(gca,'XtickLabel', C);
+set(gca,'YtickLabel', sigma);
+xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
+title('Avg. error over the 2D parameter space')
+
+%% Analyse the effect of changing C or ? on the average training error 
+% (proportion of false classifications in the training set Tk after training with Tk).
+
+tic
+avgTrainErrorSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTrainSet', C, sigma);
+toc 
+
+avg_error_svm = (sum(avgTrainErrorSVM, 3) ./ M) * 100;
+figure, bar3(avg_error_svm);
+set(gca,'XtickLabel', C);
+set(gca,'YtickLabel', sigma);
+xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
+title('Avg. training error over the 2D parameter space')
+
+

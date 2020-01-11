@@ -34,7 +34,10 @@ else
     lb = zeros(N, 1);
     ub = ones(N, 1) * C;
     
-    [alpha] = quadprog(H,f,[],[],Aeq,beq,lb,ub);
+    A = [-eye(N,N); eye(N, N)];
+    b = [zeros(N,1); C * ones(N, 1)];
+    
+    [alpha] = quadprog(H,f,A,b,Aeq,beq);
 end
 
 %% Getting w0

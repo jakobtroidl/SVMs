@@ -27,7 +27,7 @@ z = reshape(z, len, len);
 contour(x,y,z,[0 0],'-','Color',color);
 if ~strcmp(mode, 'nomargins')
     contour(x,y,z+1,[0 0],'--','Color',color);
-    contour(x,y,z-1,[0 0],'--','Color',color);
+    contour(x,y,z-1,[0 0],'--','Color',color,'HandleVisibility','off');
     
     sv = X(a > 0.00001, :);
     scatter(sv(:,1),sv(:,2),'ko');
