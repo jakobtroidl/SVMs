@@ -1,4 +1,4 @@
-function [incorr_SVM] = evaluateSVM(trainSamples, trainLabels, testSamples, testLabels, evaluateMode, C, sigma)
+function [incorr_SVM, numOfSupportVecs] = evaluateSVM(trainSamples, trainLabels, testSamples, testLabels, evaluateMode, C, sigma)
 %todo
     testSize = size(testSamples, 2);
     if nargin == 5
@@ -17,6 +17,8 @@ function [incorr_SVM] = evaluateSVM(trainSamples, trainLabels, testSamples, test
         evaluateSamples = trainSamples;
         evaluateLabels = trainLabels;
     end
+    
+    numOfSupportVecs = sum(alpha > 0.0001);
 
     %% Comparison
     if nargin == 5

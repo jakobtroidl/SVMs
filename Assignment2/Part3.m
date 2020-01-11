@@ -38,13 +38,13 @@ labels_test_01 = (labels_test_01 * 2) - 1; % scale labels to [-1; 1]
 
  %% Compare average error of Linear SVM (no kernel, no slack variable) with perceptron
 tic
-errorLinearSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet');
-errorLinearPerc = evaluatePercs(train, trainL, imgs_test_01, labels_test_01);
+[errorLinearSVM, ~] = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet');
+errorPerc = evaluatePercs(train, trainL, imgs_test_01, labels_test_01);
 toc
 
 % calculate the average error for Perc and SVM over all M trained SVMs and Perc's 
 avg_error_svm = (sum(errorLinearSVM, 3) / M) * 100;
-avg_error_perc = (sum(errorLinearPerc, 3) / M) * 100;
+avg_error_perc = (sum(errorPerc, 3) / M) * 100;
 
 % plot results
 X = categorical({'Avg error SVM','Avg error Perc'});
@@ -57,26 +57,39 @@ ylabel('% of misclassified samples')
 %% Explore 2D parameter space of (sigma, C) of SVM and plot average errors. 
 %Analyse the effect of changing C or ? on the average test error rate Ravg of the SVM.
 
-C = [0.5 1 3 5 7 10 20 50 Inf];
-sigma = [0.5 1 2 3 5 7 10 20 30];
+% C = [0.5 1 3 5 7 10 20 50 Inf];
+%sigma = [0.5 1 2 3 5 7 10 20 30];
+C = [logspace(0, 2, 10), Inf];
+sigma = logspace(-3, 1, 10) * 5;
 
+% C = [0.5 1 3];
+% sigma = [1 2 3];
 
 tic
-errorSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet', C, sigma);
+[errorSVM, numOfSupportVecs] = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet', C, sigma);
 toc 
 
 avg_error_svm = (sum(errorSVM, 3) ./ M) * 100;
+
 figure, bar3(avg_error_svm);
 set(gca,'XtickLabel', C);
 set(gca,'YtickLabel', sigma);
 xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
 title('Avg. error over the 2D parameter space')
 
-%% Analyse the effect of changing C or ? on the average training error 
+avg_numofSupportVecs = (sum(numOfSupportVecs, 3) ./ M);
+figure, bar3(avg_numofSupportVecs);
+set(gca,'XtickLabel', C);
+set(gca,'YtickLabel', sigma);
+xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. # of support vectors')
+title('Avg. # of support vectors over the 2D parameter space')
+
+
+%% Analyse the effect of changing C or sigma on the average training error 
 % (proportion of false classifications in the training set Tk after training with Tk).
 
 tic
-avgTrainErrorSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTrainSet', C, sigma);
+[avgTrainErrorSVM, ~] = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTrainSet', C, sigma);
 toc 
 
 avg_error_svm = (sum(avgTrainErrorSVM, 3) ./ M) * 100;
@@ -85,5 +98,7 @@ set(gca,'XtickLabel', C);
 set(gca,'YtickLabel', sigma);
 xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
 title('Avg. training error over the 2D parameter space')
+
+%% Analyse the relation of the average number of support vectors and the average test error rate Ravg of the SVM.
 
 
