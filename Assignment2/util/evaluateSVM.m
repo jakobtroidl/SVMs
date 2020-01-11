@@ -7,7 +7,7 @@ function [incorr_SVM, numOfSupportVecs] = evaluateSVM(trainSamples, trainLabels,
     else
         % train a SVM with kernel and regularization parameter C
         kernel = @(x1, x2)rbfkernel(x1, x2, sigma);
-        [alpha, w0] = trainSVM(trainSamples', trainLabels, kernel, C);
+        [alpha, w0] = trainSVM(trainSamples', trainLabels, C, kernel);
     end
     
     if strcmp(evaluateMode, 'EvalOnTestSet')

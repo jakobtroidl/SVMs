@@ -50,7 +50,7 @@ if nargin == 2
 else
     % prevent the system from a support vector with alpha = C
     idx = alpha < C - 0.01;
-    [~,s] = max(alpha(idx));
+    [~,s] = max(alpha .* idx);
 end
 
 ts = t(s);

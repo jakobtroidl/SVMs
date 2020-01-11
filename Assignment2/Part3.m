@@ -59,8 +59,8 @@ ylabel('% of misclassified samples')
 
 % C = [0.5 1 3 5 7 10 20 50 Inf];
 %sigma = [0.5 1 2 3 5 7 10 20 30];
-C = [logspace(0, 2, 10), Inf];
-sigma = logspace(-3, 1, 10) * 5;
+C = [logspace(-1, 2, 2) * 5, Inf];
+sigma = logspace(-3, 1, 3) * 5;
 
 % C = [0.5 1 3];
 % sigma = [1 2 3];
@@ -72,15 +72,15 @@ toc
 avg_error_svm = (sum(errorSVM, 3) ./ M) * 100;
 
 figure, bar3(avg_error_svm);
-set(gca,'XtickLabel', C);
-set(gca,'YtickLabel', sigma);
-xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
+set(gca,'XtickLabel', sigma);
+set(gca,'YtickLabel', C);
+ylabel('regularization param. C'), xlabel('sigma'), zlabel('Avg. error in %')
 title('Avg. error over the 2D parameter space')
 
 avg_numofSupportVecs = (sum(numOfSupportVecs, 3) ./ M);
 figure, bar3(avg_numofSupportVecs);
-set(gca,'XtickLabel', C);
-set(gca,'YtickLabel', sigma);
+set(gca,'YtickLabel', C);
+set(gca,'XtickLabel', sigma);
 xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. # of support vectors')
 title('Avg. # of support vectors over the 2D parameter space')
 

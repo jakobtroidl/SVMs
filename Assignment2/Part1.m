@@ -7,7 +7,7 @@ plotdata(X, t);
 legend('Zeros','Ones');
 title('Input data');
 
-[alpha, w0] = trainSVM(X, t);
+[alpha, w0] = trainSVM(X, t, 10);
 
 %% Classify test points
 y = discriminant(alpha, w0, X, t, Xtest);
