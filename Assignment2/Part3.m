@@ -5,7 +5,7 @@ addpath('readmnist')
 % by selecting images from the MNIST training set, where each Tk consists
 % of not more than N=70 images
 
-M = 3; %  # of training sets
+M = 150; %  # of training sets
 N = 70; %  # of images per training set
 train = cell(M,1);
 trainL = cell(M,1); % labels
@@ -59,8 +59,8 @@ ylabel('% of misclassified samples')
 
 % C = [0.5 1 3 5 7 10 20 50 Inf];
 %sigma = [0.5 1 2 3 5 7 10 20 30];
-C = [logspace(-1, 2, 2) * 5, Inf];
-sigma = logspace(-3, 1, 3) * 5;
+C = [logspace(0, 2, 6), Inf];
+sigma = logspace(-3, 1, 6) * 5;
 
 % C = [0.5 1 3];
 % sigma = [1 2 3];
@@ -72,16 +72,16 @@ toc
 avg_error_svm = (sum(errorSVM, 3) ./ M) * 100;
 
 figure, bar3(avg_error_svm);
-set(gca,'XtickLabel', sigma);
 set(gca,'YtickLabel', C);
-ylabel('regularization param. C'), xlabel('sigma'), zlabel('Avg. error in %')
+set(gca,'XtickLabel', sigma);
+xlabel('sigma'), ylabel('regularization param. C'), zlabel('Avg. error in %')
 title('Avg. error over the 2D parameter space')
 
 avg_numofSupportVecs = (sum(numOfSupportVecs, 3) ./ M);
 figure, bar3(avg_numofSupportVecs);
 set(gca,'YtickLabel', C);
 set(gca,'XtickLabel', sigma);
-xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. # of support vectors')
+xlabel('sigma'), ylabel('regularization param. C'), zlabel('Avg. # of support vectors')
 title('Avg. # of support vectors over the 2D parameter space')
 
 
@@ -94,11 +94,10 @@ toc
 
 avg_error_svm = (sum(avgTrainErrorSVM, 3) ./ M) * 100;
 figure, bar3(avg_error_svm);
-set(gca,'XtickLabel', C);
-set(gca,'YtickLabel', sigma);
-xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
+set(gca,'YtickLabel', C);
+set(gca,'XtickLabel', sigma);
+xlabel('sigma'), ylabel('regularization param. C'), zlabel('Avg. error in %')
 title('Avg. training error over the 2D parameter space')
 
 %% Analyse the relation of the average number of support vectors and the average test error rate Ravg of the SVM.
-
 
