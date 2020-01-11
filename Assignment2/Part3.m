@@ -38,7 +38,8 @@ labels_test_01 = (labels_test_01 * 2) - 1; % scale labels to [-1; 1]
 
  %% Compare average error of Linear SVM (no kernel, no slack variable) with perceptron
 tic
-[errorLinearSVM, errorLinearPerc] = evaluate(train, trainL, imgs_test_01, labels_test_01);
+errorLinearSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet');
+errorLinearPerc = evaluatePercs(train, trainL, imgs_test_01, labels_test_01);
 toc
 
 % calculate the average error for Perc and SVM over all M trained SVMs and Perc's 
@@ -53,22 +54,36 @@ figure, bar(X,Y, 0.4)
 title('Average error comparison of Perceptron and SVM (linear kernel, no slack variables)')
 ylabel('% of misclassified samples')
 
-%% Explore 2D parameter space of (sigma, C) of SVM and plot average errors
+%% Explore 2D parameter space of (sigma, C) of SVM and plot average errors. 
+%Analyse the effect of changing C or ? on the average test error rate Ravg of the SVM.
 
-% C = [0.5 1 3 5 7 10 20 50 Inf];
-% sigma = [0.5 1 2 3 5 7 10 20 30];
-C = [5 7 10];
-sigma = [3 5 7];
+C = [0.5 1 3 5 7 10 20 50 Inf];
+sigma = [0.5 1 2 3 5 7 10 20 30];
+
 
 tic
-[errorSVM, errorPerc] = evaluate(train, trainL, imgs_test_01, labels_test_01, C, sigma);
+errorSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTestSet', C, sigma);
 toc 
 
 avg_error_svm = (sum(errorSVM, 3) ./ M) * 100;
-[minimum, idx] = min(avg_error_svm);
-figure; 
-b = bar3(avg_error_svm);
+figure, bar3(avg_error_svm);
 set(gca,'XtickLabel', C);
 set(gca,'YtickLabel', sigma);
 xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
 title('Avg. error over the 2D parameter space')
+
+%% Analyse the effect of changing C or ? on the average training error 
+% (proportion of false classifications in the training set Tk after training with Tk).
+
+tic
+avgTrainErrorSVM = evaluate(train, trainL, imgs_test_01, labels_test_01, 'EvalOnTrainSet', C, sigma);
+toc 
+
+avg_error_svm = (sum(avgTrainErrorSVM, 3) ./ M) * 100;
+figure, bar3(avg_error_svm);
+set(gca,'XtickLabel', C);
+set(gca,'YtickLabel', sigma);
+xlabel('regularization param. C'), ylabel('sigma'), zlabel('Avg. error in %')
+title('Avg. training error over the 2D parameter space')
+
+
