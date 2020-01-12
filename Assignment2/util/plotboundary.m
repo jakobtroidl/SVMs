@@ -24,13 +24,17 @@ end
 
 z = reshape(z, len, len);
 
-contour(x,y,z,[0 0],'-','Color',color);
+if ~strcmp(mode, 'justmargins')
+    contour(x,y,z,[0 0],'-','Color',color);
+end
 if ~strcmp(mode, 'nomargins')
     contour(x,y,z+1,[0 0],'--','Color',color);
     contour(x,y,z-1,[0 0],'--','Color',color,'HandleVisibility','off');
     
-    sv = X(a > 0.00001, :);
-    scatter(sv(:,1),sv(:,2),'ko');
+    if ~strcmp(mode, 'justmargins')
+        sv = X(a > 0.00001, :);
+        scatter(sv(:,1),sv(:,2),'ko');
+    end
 end
 
 if strcmp(mode, 'surf')
