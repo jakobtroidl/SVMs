@@ -34,8 +34,8 @@ errors = zeros(numel(Cs), numel(sigmas), n);
 totaltime = tic;
 for k = 1:n
     
-    testI = sizescum(k)+1:sizescum(k+1);
-    trainI = setdiff(1:size(X,1), testI);
+    trainI = sizescum(k)+1:sizescum(k+1);
+    testI = setdiff(1:size(X,1), trainI);
 
     Xtest = X(testI,:);
     ttest = t(testI);

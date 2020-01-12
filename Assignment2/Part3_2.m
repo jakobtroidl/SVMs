@@ -5,8 +5,8 @@ addpath('readmnist')
 % by selecting images from the MNIST training set, where each Tk consists
 % of not more than N=70 images
 
-M = 100; %  # of training sets
-N = 20; %  # of images per training set
+M = 150; %  # of training sets
+N = 70; %  # of images per training set
 train = zeros(M*N, 2);
 trainL = zeros(M, 1); % labels
 
@@ -30,7 +30,7 @@ X = X(:,idx);
 t = t(idx);
 
 %% Cross validation
-Cs = [5 10 50 100 10000];
-sigmas = [0.1 0.5 1 5 10];
+Cs = [50];
+sigmas = [10];
 errors = crossvalidate(X, t, Cs, sigmas, M, N);
 errorsavg = mean(errors,3);
