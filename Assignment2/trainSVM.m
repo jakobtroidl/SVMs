@@ -15,6 +15,7 @@ beq = 0;
 
 f = -ones(N,1);
 
+options =  optimset('Display','off');
 if nargin == 2
     xt = (X .* t)';
     H = xt' * xt;
@@ -22,7 +23,7 @@ if nargin == 2
     A = -eye(N,N);
     b = zeros(N,1);
 
-    [alpha] = quadprog(H,f,A,b,Aeq,beq);
+    [alpha] = quadprog(H,f,A,b,Aeq,beq,[],[],[],options);
 else
     if nargin == 3
         xt = (X .* t)';
@@ -31,13 +32,13 @@ else
         H = kernel(X, X) .* (t * t');
     end
     
-    lb = zeros(N, 1);
-    ub = ones(N, 1) * C;
+    %lb = zeros(N, 1);
+    %ub = ones(N, 1) * C;
     
     A = [-eye(N,N); eye(N, N)];
     b = [zeros(N,1); C * ones(N, 1)];
     
-    [alpha] = quadprog(H,f,A,b,Aeq,beq);
+    [alpha] = quadprog(H,f,A,b,Aeq,beq,[],[],[],options);
 end
 
 %% Getting w0
@@ -45,12 +46,12 @@ end
 % Hint: Note that with C<Inf you have to take care about selecting a
 % support vector xs with margin |d(xs)| = 1 to calculate w0.
 
-if nargin == 2
+if nargin <= 2
     [~,s] = max(alpha);
 else
     % prevent the system from a support vector with alpha = C
     idx = alpha < C - 0.01;
-    [~,s] = max(alpha(idx));
+    [~,s] = max(alpha .* idx);
 end
 
 ts = t(s);
