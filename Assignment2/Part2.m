@@ -1,8 +1,7 @@
-clear all;close all;
 addpath(genpath('util'));
 addpath('readmnist')
 
-[X, t, Xtest, ttest, imgs, imgsTest] = readdata();
+[X, t, Xtest, ttest, ~, imgsTest] = readdata();
 
 %% Part 2 - Bullet 1
 sigma = 0.2; % RBF kernel parameter
@@ -29,7 +28,7 @@ plotdata(X,t);
 plotboundary(alpha, w0, X, t, kernelFunc, 'surf');
 legend('Zeros', 'Ones', 'Decision boundary', '|Discriminant|=1', ...
     'Support vectors', 'Location', 'best');
-saveas(gcf,['figures/Discriminant function surface.png']);
+%saveas(gcf,['figures/Discriminant function surface.png']);
 title(['Discriminant function surface for \sigma = ' num2str(sigma), ...
     ' and C = ' num2str(C)]);
 
@@ -51,7 +50,7 @@ for i = 1:numel(sigmaRange)
 end
 legend(legendstrs,'Interpreter','latex');
 text(0, -0.05, 'Higher values of \sigma correspond to straighter decision boundaries.');
-saveas(gcf,['figures/Various sigma values.png']);
+%saveas(gcf,['figures/Various sigma values.png']);
 title(['Decision boundary for various \sigma values and C = ' num2str(C)]);
 
 %% Part 3 - Bullet 3 - Slack variables, regularization parameter C
@@ -80,7 +79,7 @@ legend('Zeros','Ones', ['Decision boundary C=' num2str(0.5)], ...
     ['|Discriminant|=1 C=' num2str(0.5)], 'Support vectors', ...
     ['|Discriminant|=1 C=' num2str(cRange(1))], ['|Discriminant|=1 C=' ...
     num2str(cRange(2))]);
-saveas(gcf,['figures/Slack variable.png']);
+%saveas(gcf,['figures/Slack variable.png']);
 title(['Decision boundary for \sigma = ' num2str(sigma) ' and C = ', ...
     num2str(C)]);
 
@@ -113,6 +112,6 @@ plotdata(X, t);
 plotboundary(alpha, w0, X, t, kernelFunc);
 legend('Zeros','Ones', 'Decision boundary', ...
     '|Discriminant|=1', 'Support vectors');
-saveas(gcf,['figures/Test set.png']);
+%saveas(gcf,['figures/Test set.png']);
 title(['Decision boundary and test data for \sigma = ' num2str(sigma), ...
     ' and C = ' num2str(C)]);

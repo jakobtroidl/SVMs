@@ -6,7 +6,7 @@ f1 = figure;
 plotdata(X, t);
 legend('Zeros','Ones');
 title('Linearly separable training set');
-saveas(gcf,['figures/Training set.png']);
+%saveas(gcf,['figures/Training set.png']);
 
 [alpha, w0] = trainSVM(X, t, Inf);
 
@@ -21,7 +21,7 @@ plotboundary(alpha, w0, X, t);
 legend('Zeros training','Ones training','Zeros test', ...
     'Ones test','Test misclassifications', 'Decision boundary', ...
     '|Discriminant|=1', 'Support vectors');
-saveas(gcf,['figures/SVM test.png']);
+%saveas(gcf,['figures/SVM test.png']);
 title('Testing SVM on another N=400 long set.');
 
 %% Plot boundary
@@ -31,7 +31,7 @@ plotdata(X,t);
 plotboundary(alpha, w0, X, t);
 legend('Zeros', 'Ones', 'Decision boundary', '|Discriminant|=1', ...
     'Support vectors', 'Location', 'best');
-saveas(gcf,['figures/SVM train.png']);
+%saveas(gcf,['figures/SVM train.png']);
 title('Trained SVM');
 
 %% Plot surface
@@ -40,5 +40,5 @@ plotdata(X,t);
 plotboundary(alpha, w0, X, t, [], 'surf');
 legend('Zeros', 'Ones', 'Decision boundary', '|Discriminant|=1', ...
     'Support vectors', 'Location', 'best');
-saveas(gcf,['figures/SVM train surface.png']);
+%saveas(gcf,['figures/SVM train surface.png']);
 title('Trained SVM with discriminant function surface');
