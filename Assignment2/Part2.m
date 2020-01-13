@@ -18,7 +18,7 @@ plotdata(X,t);
 plotboundary(alpha, w0, X, t, kernelFunc);
 legend('Zeros','Ones', 'Decision boundary', '|Discriminant|=1', ...
     'Support vectors');
-saveas(gcf,['figures/Decision boundary.png']);
+%saveas(gcf,['figures/Decision boundary.png']);
 title(['Decision boundary for \sigma = ' num2str(sigma) ' and C = ', ...
     num2str(C)]);
 
